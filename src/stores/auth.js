@@ -1,7 +1,6 @@
 import Api from "@/services/Api";
 import { defineStore } from "pinia";
 
-
 export const useAuthStore = defineStore("authStore", {
   state: () => {
     return {
@@ -11,15 +10,17 @@ export const useAuthStore = defineStore("authStore", {
   },
   actions: {
     async getUser() {
-      try {
-        const res = await Api.get('/user')
+      if (localStorage.getItem('token')) {
+        try {
+          const res = await Api.get('/user')
 
-        const data = await res.data;
-        this.user = data
+          const data = await res.data;
+          this.user = data
 
-      } catch (error) {
-        console.log('error data: ', error);
-        this.user = null
+        } catch (error) {
+          this.errors = error.response.data.errors
+          this.user = null
+        }
       }
     },
 
@@ -30,12 +31,12 @@ export const useAuthStore = defineStore("authStore", {
         const data = await res.data;
         console.log('res data: ', data);
 
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('token', data.token);
         this.errors = {};
-        this.user = data.customer
-        this.router.push({ name: "home" });
+        this.user = data.customer;
+        this.router.push({ name: 'dashboard' });
       } catch (error) {
-        this.errors = error.response.data.errors
+        this.errors = error.response.data.errors;
       }
     },
 
@@ -52,7 +53,7 @@ export const useAuthStore = defineStore("authStore", {
           this.router.push({ name: 'home' });
         }
       } catch (error) {
-        this.errors = error.response.data.errors
+        this.errors = error.response.data.errors;
       }
     }
   }

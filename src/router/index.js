@@ -4,6 +4,7 @@ import RegisterView from '@/views/auth/RegisterView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import IndexView from '@/views/dashboard/IndexView.vue'
 import { useAuthStore } from '@/stores/auth'
+import OrderView from '@/views/dashboard/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,12 @@ const router = createRouter({
       path: '/customer/dashboard',
       name: 'dashboard',
       component: IndexView,
+      meta: { auth: true },
+    },
+    {
+      path: '/customer/order',
+      name: 'order',
+      component: OrderView,
       meta: { auth: true },
     },
   ],

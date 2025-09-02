@@ -11,7 +11,7 @@ const authStore = useAuthStore()
     <nav class="flex-grow">
       <ul class="space-y-4">
         <li>
-          <router-link :to="{ name: dashboard }" active-class="bg-gray-100 text-gray-900"
+          <router-link to="/customer/dashboard" active-class="bg-gray-100 text-gray-900"
             class="flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100 transition duration-200">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
@@ -23,12 +23,12 @@ const authStore = useAuthStore()
           </router-link>
         </li>
         <li>
-          <router-link to="/orders" active-class="bg-gray-100 text-gray-900"
+          <router-link to="/customer/order" active-class="bg-gray-100 text-gray-900"
             class="flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100 transition duration-200">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H7v12a2 2 0 002 2h2v4h6v-4h2v-6H7V3z"></path>
+            <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
             </svg>
             <span>MY ORDER</span>
           </router-link>

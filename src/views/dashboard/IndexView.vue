@@ -1,13 +1,10 @@
 <script setup>
 import CustomerMenu from '@/components/CustomerMenu.vue';
 import { useAuthStore } from '@/stores/auth';
-import { onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const authStore = useAuthStore();
+const { user } = storeToRefs(useAuthStore())
 
-onMounted(() => {
-  authStore.getUser();
-})
 </script>
 
 <template>
@@ -26,7 +23,7 @@ onMounted(() => {
           </svg>
           DASHBOARD
         </h2>
-        <p v-if="authStore.user" class="text-2xl mt-5">Selamat Datang <strong>{{ authStore.user.name }}</strong></p>
+        <p v-if="user" class="text-2xl mt-5">Selamat Datang <strong>{{ user.name }}</strong></p>
         <p v-else class="text-2xl mt-5">Memuat data...</p>
       </div>
     </div>
