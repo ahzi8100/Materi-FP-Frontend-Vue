@@ -14,5 +14,12 @@ export const useProductStore = defineStore('productStore', {
 
       return data.products;
     },
+
+    async getDetailProduct(slug) {
+      const res = await Api.get(`/product/${slug}`);
+      const data = await res.data;
+
+      return data.product;
+    }
   }
 })

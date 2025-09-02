@@ -14,5 +14,19 @@ export const useCategoryStore = defineStore('categoryStore', {
 
       return data.categories;
     },
+
+    async getAllCategories() {
+      const res = await Api.get('/categories');
+      const data = await res.data;
+
+      return data.categories;
+    },
+
+    async getProductInCategories(slug) {
+      const res = await Api.get(`/category/${slug}`);
+      const data = await res.data;
+
+      return data.product;
+    }
   }
 })

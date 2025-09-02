@@ -5,6 +5,9 @@ import LoginView from '@/views/auth/LoginView.vue'
 import IndexView from '@/views/dashboard/IndexView.vue'
 import { useAuthStore } from '@/stores/auth'
 import OrderView from '@/views/dashboard/OrderView.vue'
+import IndexViewCategory from '@/views/category/IndexView.vue'
+import ShowViewCategory from '@/views/category/ShowView.vue'
+import ShowProduct from '@/views/product/ShowProduct.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +40,21 @@ const router = createRouter({
       name: 'order',
       component: OrderView,
       meta: { auth: true },
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: IndexViewCategory,
+    },
+    {
+      path: '/category/:slug',
+      name: 'detail_category',
+      component: ShowViewCategory
+    },
+    {
+      path: '/product/:slug',
+      name: 'detail_product',
+      component: ShowProduct
     },
   ],
 })
