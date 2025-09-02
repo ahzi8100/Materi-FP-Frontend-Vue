@@ -38,9 +38,9 @@ onMounted(async () => {
       <!-- Right section: Buttons (for desktop) -->
       <div class="hidden lg:flex items-center space-x-4 relative">
         <div class="relative group cart-wrapper">
-          <a href="/cart.html">
+          <router-link :to="{ name: 'cart' }">
             <img src="../assets/images/cart-shopping.svg" alt="Cart" class="h-6 w-6 group-hover:scale-120">
-          </a>
+          </router-link>
         </div>
         <div v-if="authStore.user">
           <router-link :to="{ name: 'dashboard' }"

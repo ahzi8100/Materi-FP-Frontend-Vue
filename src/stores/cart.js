@@ -64,7 +64,7 @@ export const useCartStore = defineStore('cartStore', {
         const res = await Api.post(`/cart/remove/${cart}`);
 
         console.log(res.data);
-        this.router.push({ name: 'cart' });
+        return this.router.push({ name: 'cart' });
       } catch (error) {
         this.errors = error.response.data.errors;
       }
@@ -77,7 +77,8 @@ export const useCartStore = defineStore('cartStore', {
         // Asumsi data respons langsung berisi snap_token
         const data = res.data;
 
-        return data.snap_token;
+        console.log(data.data)
+        return this.router.push({ name: 'order' });
       } catch (error) {
         if (error.response && error.response.data.errors) {
           this.errors = error.response.data.errors;
