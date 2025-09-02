@@ -8,6 +8,8 @@ import OrderView from '@/views/dashboard/OrderView.vue'
 import IndexViewCategory from '@/views/category/IndexView.vue'
 import ShowViewCategory from '@/views/category/ShowView.vue'
 import ShowProduct from '@/views/product/ShowProduct.vue'
+import IndexCart from '@/views/cart/IndexCart.vue'
+import OrderShow from '@/views/dashboard/OrderShow.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +44,12 @@ const router = createRouter({
       meta: { auth: true },
     },
     {
+      path: '/customer/order/:snap_token',
+      name: 'detail_order',
+      component: OrderShow,
+      meta: { auth: true },
+    },
+    {
       path: '/categories',
       name: 'categories',
       component: IndexViewCategory,
@@ -56,6 +64,12 @@ const router = createRouter({
       name: 'detail_product',
       component: ShowProduct
     },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: IndexCart,
+      meta: { auth: true },
+    }
   ],
 })
 

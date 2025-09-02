@@ -1,5 +1,14 @@
 <script setup>
 import CustomerMenu from '@/components/CustomerMenu.vue';
+import { useOrderStore } from '@/stores/order';
+import { onMounted, ref } from 'vue';
+
+const { getAllOrders } = useOrderStore();
+const orders = ref([]);
+
+onMounted(async () => {
+  orders.value = await getAllOrders();
+})
 </script>
 
 <template>
@@ -30,13 +39,14 @@ import CustomerMenu from '@/components/CustomerMenu.vue';
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">INV-12345</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">John Doe</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jakarta</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$150.00</td>
+                <tr v-for="order in orders" :key="order.id">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.invoice }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.name }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.status }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.grand_total }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <a href="#" class="px-3 py-1 bg-blue-600 text-white rounded-2xl hover:bg-blue-800">Detail</a>
+                    <router-link :to="{ name: 'detail_order', params: { snap_token: order.snap_token } }"
+                      class="px-3 py-1 bg-blue-600 text-white rounded-2xl hover:bg-blue-800">Detail</router-link>
                   </td>
                 </tr>
               </tbody>

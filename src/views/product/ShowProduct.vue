@@ -1,13 +1,19 @@
 <script setup>
 import { calculateDiscount, moneyFormat } from '@/composables/useFormatter';
+import { useAuthStore } from '@/stores/auth';
+import { useCartStore } from '@/stores/cart';
 import { useProductStore } from '@/stores/product';
+import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 
 const route = useRoute();
 const { getDetailProduct } = useProductStore();
+const { user } = storeToRefs(useAuthStore());
 const product = ref({})
+const quantity = ref(1)
+const { addToCart } = useCartStore();
 
 onMounted(async () => {
   const slug = route.params.slug
@@ -42,10 +48,14 @@ onMounted(async () => {
                 <p class="mb-2">Availability:<strong> {{ product.stock }} In Stock</strong></p>
               </div>
               <div class="text-2xl font-semibold mb-8">Rp. {{ moneyFormat(calculateDiscount(product)) }}</div>
+              <div class="flex items-center mb-8">
+                <span>Quantity</span>
+                <input type="number" class="ml-2 border rounded-2xl py-1 px-3" v-model="quantity" />
+              </div>
               <div class="mb-4 pb-4 border-b border-gray-line">
                 <p class="mb-2">Discount: <strong> {{ product.discount }}%</strong></p>
               </div>
-              <button
+              <button @click.prevent="addToCart(product.id, user.id, quantity, calculateDiscount(product))"
                 class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">Add
                 to Cart</button>
             </div>

@@ -21,7 +21,7 @@ onMounted(async () => {
           <div class="bg-white p-3 rounded-lg shadow-lg">
             <img :src="`http://test-backend-shop.test/storage/products/${product.image}`" alt="Product 1"
               class="w-full object-cover mb-4 rounded-lg">
-            <router-link :to="{ name: 'detail_category', params: { slug: product.slug } }"
+            <router-link :to="{ name: 'detail_product', params: { slug: product.slug } }"
               class="text-lg font-semibold mb-2">{{ product.title }}</router-link>
             <p class="my-2">{{ product.category.name }}</p>
             <div class="flex items-center mb-4">
