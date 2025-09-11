@@ -133,13 +133,12 @@ const handleCheckout = async () => {
         <div v-for="cart in carts" :key="cart.id"
           class="flex items-center justify-between p-2 border-1 bg-blue-50 border-gray-50 mb-4">
           <div class="flex items-start">
-            <img :src="`http://test-backend-shop.test/storage/products/${cart.product.image}`" alt="Product"
-              class="h-20 w-20 object-cover rounded mr-4">
+            <img :src="cart.product.image" alt="Product" class="h-20 w-20 object-cover rounded mr-4">
             <div>
               <p class="font-semibold text-gray-800">{{ cart.product.title }}</p>
               <p class="text-xs text-gray-500 my-1">QTY : {{ cart.quantity }}</p>
               <span class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
-                }}</span>
+              }}</span>
             </div>
           </div>
           <div class="flex flex-col items-end">
@@ -236,7 +235,7 @@ const handleCheckout = async () => {
                 <input type="radio" name="courier" :id="`courier-${courier.value}`" :value="courier.value"
                   v-model="selectedCourier" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                 <label :for="`courier-${courier.value}`" class="ml-2 block text-sm text-gray-900">{{ courier.name
-                  }}</label>
+                }}</label>
               </div>
             </div>
           </div>

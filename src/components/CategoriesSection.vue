@@ -18,7 +18,7 @@ onMounted(async () => {
         <!-- Category 1 -->
         <div v-for="category in categories" :key="category.id" class="w-full sm:w-1/3 px-4 mb-8">
           <div class="category-banner relative overflow-hidden rounded-lg shadow-lg group">
-            <img :src="`http://test-backend-shop.test/storage/categories/${category.image}`" alt="Category 1"
+            <img :src="category.image" alt="Category 1"
               class="w-full h-auto">
             <div class="absolute inset-0 bg-gray-light bg-opacity-50"></div>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">

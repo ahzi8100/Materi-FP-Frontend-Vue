@@ -40,12 +40,12 @@ onMounted(async () => {
     <div class="main-slider swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="slider in sliders" :key="slider.id">
-          <img :src="`http://test-backend-shop.test/storage/sliders/${slider.image}`" alt="Product 1"
+          <img :src="slider.image" alt="Product 1"
             style="height: 800px;">
           <div class="swiper-slide-content">
             <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">{{ slider.title }}</h2>
             <p class="mb-4 text-white md:text-2xl">{{ slider.description }}</p>
-            <a :href="`${slider.link}`"
+            <a :href="slider.link"
               class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">Shop
               now</a>
           </div>

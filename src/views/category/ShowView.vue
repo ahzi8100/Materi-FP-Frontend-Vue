@@ -23,7 +23,7 @@ onMounted(async () => {
         <!-- Product 1 -->
         <div v-for="product in products" :key="product.id" class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
           <div class="bg-white p-3 rounded-lg shadow-lg">
-            <img :src="`http://test-backend-shop.test/storage/products/${product.image}`" alt="Product 1"
+            <img :src="product.image" alt="Product 1"
               class="w-full object-cover mb-4 rounded-lg">
             <router-link :to="{ name: 'detail_product', params: { slug: product.slug } }"
               class="text-lg font-semibold mb-2">{{ product.title }}</router-link>

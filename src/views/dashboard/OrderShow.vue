@@ -82,7 +82,7 @@ function payment(snap_token) {
                   <td class="w-1 py-2">:</td>
                   <td class="py-2">
                     {{ detailOrder.courier }} / {{ detailOrder.service }} / Rp.
-                    {{ detailOrder.cost_courier }}
+                    {{ moneyFormat(detailOrder.cost_courier) }}
                   </td>
                 </tr>
                 <tr>
@@ -100,7 +100,7 @@ function payment(snap_token) {
                   </td>
                   <td class="w-1 py-2">:</td>
                   <td class="py-2">
-                    Rp. {{ detailOrder.grand_total }}
+                    Rp. {{ moneyFormat(detailOrder.grand_total) }}
                   </td>
                 </tr>
                 <tr>
@@ -109,16 +109,16 @@ function payment(snap_token) {
                   </td>
                   <td class="w-1 py-2">:</td>
                   <td class="py-2">
-                    <button @click="payment(detailOrder.snap_token)" v-if="detailOrder.status == 'pending'"
+                    <button @click="payment(detailOrder.snap_token)" v-if="detailOrder.status == 'Pending'"
                       class="bg-black-500 hover:bg-blue-600 font-semibold py-2 px-4 rounded-full">BAYAR
                       SEKARANG</button>
-                    <button v-else-if="detailOrder.status == 'success'"
+                    <button v-else-if="detailOrder.status == 'Success'"
                       class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full">{{
                         detailOrder.status }}</button>
-                    <button v-else-if="detailOrder.status == 'expired'"
+                    <button v-else-if="detailOrder.status == 'Expired'"
                       class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-full">{{
                         detailOrder.status }}</button>
-                    <button v-else-if="detailOrder.status == 'failed'"
+                    <button v-else-if="detailOrder.status == 'Failed'"
                       class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full">{{
                         detailOrder.status }}</button>
                   </td>
@@ -138,8 +138,7 @@ function payment(snap_token) {
                   class="bg-gray-100 border-b border-gray-200">
                   <td class="p-4" width="25%">
                     <div class="w-24 h-24">
-                      <img :src="`http://test-backend-shop.test/storage/products/${product.image}`"
-                        class="w-full h-full object-cover rounded-lg">
+                      <img :src="product.image" class="w-full h-full object-cover rounded-lg">
                     </div>
                   </td>
                   <td class="p-4" width="50%">

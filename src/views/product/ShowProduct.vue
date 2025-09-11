@@ -32,7 +32,7 @@ onMounted(async () => {
             <!-- Big Image -->
             <div id="main-image-container">
               <img id="main-image" class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
-                :src="`http://test-backend-shop.test/storage/products/${product.image}`" alt="Main Product Image" />
+                :src="product.image" alt="Main Product Image" />
             </div>
           </div>
           <!-- Product Details Section -->

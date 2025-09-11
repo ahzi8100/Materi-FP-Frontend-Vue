@@ -1,5 +1,6 @@
 <script setup>
 import CustomerMenu from '@/components/CustomerMenu.vue';
+import { moneyFormat } from '@/composables/useFormatter';
 import { useOrderStore } from '@/stores/order';
 import { onMounted, ref } from 'vue';
 
@@ -43,7 +44,7 @@ onMounted(async () => {
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.invoice }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.name }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.status }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.grand_total }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp. {{ moneyFormat(order.grand_total) }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <router-link :to="{ name: 'detail_order', params: { snap_token: order.snap_token } }"
                       class="px-3 py-1 bg-blue-600 text-white rounded-2xl hover:bg-blue-800">Detail</router-link>
