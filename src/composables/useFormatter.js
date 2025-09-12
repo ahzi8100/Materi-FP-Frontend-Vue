@@ -1,11 +1,10 @@
 export function moneyFormat(number) {
-
   let num = Number(number);
 
   if (isNaN(num)) {
     return "0,00";
   }
-  
+
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",

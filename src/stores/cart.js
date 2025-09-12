@@ -20,7 +20,7 @@ export const useCartStore = defineStore('cartStore', {
 
         const data = res.data;
         console.log(data.carts);
-        this.router.push({ name: 'cart' });
+        return this.router.push({ name: 'cart' });
       } catch (error) {
         this.errors = error.response.data.errors;
       }
