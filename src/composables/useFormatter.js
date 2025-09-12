@@ -1,20 +1,18 @@
 export function moneyFormat(number) {
-  // Tambahkan pengecekan untuk menghindari error jika data tidak lengkap
-  // let num = Number(number);
 
-  // if (isNaN(num)) {
-  //   return "0"; // fallback kalau datanya tidak valid
-  // }
+  let num = Number(number);
+
+  if (isNaN(num)) {
+    return "0,00";
+  }
 
   // let val = num.toFixed(2).replace('.', ',');
-  // return val.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-  if (typeof number !== 'number') {
-    return parseInt(number)
-  };
-
-  let val = (number / 1).toFixed(2).replace('.', ',');
-  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  // return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 2
+  }).format(num);
 }
 
 // calculate discount
