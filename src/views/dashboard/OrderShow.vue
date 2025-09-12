@@ -110,10 +110,10 @@ function payment(snap_token) {
                   <td class="w-1 py-2">:</td>
                   <td class="py-2">
                     <button @click="payment(detailOrder.snap_token)" v-if="detailOrder.status == 'Pending'"
-                      class="bg-black-500 hover:bg-blue-600 font-semibold py-2 px-4 rounded-full">BAYAR
+                      class="bg-gray-100 hover:bg-gray-300 font-semibold py-2 px-4 rounded-full">BAYAR
                       SEKARANG</button>
                     <button v-else-if="detailOrder.status == 'Success'"
-                      class="text-green-500 font-semibold py-2 px-4 rounded-full">{{
+                      class="bg-gray-100 text-green-500 font-semibold py-2 px-4 rounded-full">{{
                       detailOrder.status }}</button>
                     <button v-else-if="detailOrder.status == 'Expired'"
                       class="text-yellow-500 font-semibold py-2 px-4 rounded-full">{{
