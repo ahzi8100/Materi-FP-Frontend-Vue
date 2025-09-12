@@ -5,9 +5,7 @@ export function moneyFormat(number) {
   if (isNaN(num)) {
     return "0,00";
   }
-
-  // let val = num.toFixed(2).replace('.', ',');
-  // return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -17,11 +15,17 @@ export function moneyFormat(number) {
 
 // calculate discount
 export function calculateDiscount(product) {
-  // Tambahkan pengecekan untuk menghindari error jika data tidak lengkap
-  if (!product || typeof product.price !== 'number' || typeof product.discount !== 'number') {
-    parseInt(product.price);
-    parseInt(product.discount);
+  if (!product) {
+    return 0; // fallback kalau product tidak ada
   }
 
-  return product.price - (product.price * (product.discount) / 100);
+  // pastikan price dan discount diubah ke number
+  const price = Number(product.price);
+  const discount = Number(product.discount);
+
+  if (isNaN(price) || isNaN(discount)) {
+    return 0; // fallback kalau datanya tidak valid
+  }
+
+  return price - (price * discount / 100);
 }
