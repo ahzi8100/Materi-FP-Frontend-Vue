@@ -1,6 +1,8 @@
 export function moneyFormat(number) {
   // Tambahkan pengecekan untuk menghindari error jika data tidak lengkap
-  if (typeof number !== 'number') return '0,00';
+  if (typeof number !== 'number') {
+    return parseInt(number)
+  };
 
   let val = (number / 1).toFixed(2).replace('.', ',');
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
