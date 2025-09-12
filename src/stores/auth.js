@@ -34,9 +34,10 @@ export const useAuthStore = defineStore("authStore", {
         localStorage.setItem('token', data.token);
         this.errors = {};
         this.user = data.customer;
-        return this.router.push({ name: 'dashboard' });
+        return true;
       } catch (error) {
         this.errors = error.response.data.errors;
+        return false;
       }
     },
 

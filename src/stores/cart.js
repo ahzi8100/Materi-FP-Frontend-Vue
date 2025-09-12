@@ -73,12 +73,9 @@ export const useCartStore = defineStore('cartStore', {
     async checkout(formData) {
       try {
         const res = await Api.post('/checkout', formData);
-
-        // Asumsi data respons langsung berisi snap_token
         const data = res.data;
 
-        console.log(data.data)
-        return this.router.push({ name: 'order' });
+        return data.snap_token;
       } catch (error) {
         if (error.response && error.response.data.errors) {
           this.errors = error.response.data.errors;

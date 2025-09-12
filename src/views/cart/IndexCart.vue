@@ -4,6 +4,7 @@ import { useCartStore } from '@/stores/cart';
 import { useCourierStore } from '@/stores/courier';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const { getCart, getTotalCart, getTotalWeight, removeCartItem, checkout } = useCartStore();
 const carts = ref([])
@@ -18,6 +19,7 @@ const selectedCityId = ref('');
 const selectedDistrictId = ref('');
 const selectedCourier = ref('');
 const selectedCourierService = ref();
+const router = useRouter();
 
 // Gunakan watcher untuk memantau perubahan province
 watch(selectedProvinceId, (newProvinceId) => {
@@ -77,17 +79,6 @@ const checkoutPayload = computed(() => {
   };
 });
 
-// Deklarasikan semua data checkout
-// const checkoutData = ref({
-//   courier: selectedCourier.value,
-//   service: selectedCourierService.value.service,
-//   cost_courier: selectedCourierService.value.cost,
-//   weight: cartWeight.value,
-//   grand_total: 0,
-// });
-
-// ... (logic untuk mendapatkan cartTotal, cartWeight, selectedCourierService) ...
-
 // Fungsi untuk proses checkout
 const handleCheckout = async () => {
   // Gabungkan semua data menjadi satu payload
@@ -97,19 +88,44 @@ const handleCheckout = async () => {
   if (snapToken) {
     // Panggil Midtrans Snap.js untuk menampilkan halaman pembayaran
     window.snap.pay(snapToken, {
+      // onSuccess: function (result) {
+      //   // Logika setelah pembayaran sukses
+      //   alert("Pembayaran berhasil!");
+      //   // Redirect ke halaman dashboard atau invoice
+      // },
+      // onPending: function (result) {
+      //   // Logika setelah pembayaran pending
+      //   alert("Pembayaran Anda sedang menunggu.");
+      // },
+      // onError: function (result) {
+      //   // Logika jika pembayaran gagal
+      //   alert("Pembayaran gagal!");
+      // },
+      // onSuccess: function () {
+      //   router.push({ name: 'detail_order', params: { snap_token: snapToken } })
+      // },
+      // onPending: function () {
+      //   router.push({ name: 'detail_order', params: { snap_token: snapToken } })
+      // },
+      // onError: function () {
+      //   router.push({ name: 'detail_order', params: { snap_token: snapToken } })
+      // }
+
       onSuccess: function (result) {
-        // Logika setelah pembayaran sukses
-        alert("Pembayaran berhasil!");
-        // Redirect ke halaman dashboard atau invoice
+        console.log("Success:", result);
+        router.push({ name: "detail_order", params: { snap_token: snapToken } });
       },
       onPending: function (result) {
-        // Logika setelah pembayaran pending
-        alert("Pembayaran Anda sedang menunggu.");
+        console.log("Pending:", result);
+        router.push({ name: "detail_order", params: { snap_token: snapToken } });
       },
       onError: function (result) {
-        // Logika jika pembayaran gagal
-        alert("Pembayaran gagal!");
+        console.log("Error:", result);
+        router.push({ name: "detail_order", params: { snap_token: snapToken } });
       },
+      onClose: function () {
+        alert("Anda menutup popup tanpa menyelesaikan pembayaran");
+      }
     });
   }
 };
@@ -138,7 +154,7 @@ const handleCheckout = async () => {
               <p class="font-semibold text-gray-800">{{ cart.product.title }}</p>
               <p class="text-xs text-gray-500 my-1">QTY : {{ cart.quantity }}</p>
               <span class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
-              }}</span>
+                }}</span>
             </div>
           </div>
           <div class="flex flex-col items-end">
@@ -235,7 +251,7 @@ const handleCheckout = async () => {
                 <input type="radio" name="courier" :id="`courier-${courier.value}`" :value="courier.value"
                   v-model="selectedCourier" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                 <label :for="`courier-${courier.value}`" class="ml-2 block text-sm text-gray-900">{{ courier.name
-                }}</label>
+                  }}</label>
               </div>
             </div>
           </div>
@@ -264,7 +280,7 @@ const handleCheckout = async () => {
               class="w-full mt-1 p-2 border rounded-md focus:ring-primary focus:border-primary"></textarea>
           </div>
 
-          <button @click="handleCheckout(formData)"
+          <button @click="handleCheckout"
             class="mt-4 bg-primary text-white font-semibold py-3 px-6 rounded-full w-full hover:bg-transparent hover:text-primary transition-colors duration-200 border border-primary">
             PROSES CHECKOUT
           </button>

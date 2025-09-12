@@ -2,6 +2,7 @@
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
 const formData = reactive({
   name: '',
@@ -10,8 +11,19 @@ const formData = reactive({
   password_confirmation: '',
 })
 
+const router = useRouter();
 const { authenticate } = useAuthStore();
 const { errors } = storeToRefs(useAuthStore());
+
+const register = async () => {
+  const success = await authenticate('register', formData)
+
+  if (success) {
+    router.push({ name: 'dashboard' }).then(() => {
+      window.location.reload();
+    });
+  }
+}
 </script>
 
 <template>
@@ -22,7 +34,7 @@ const { errors } = storeToRefs(useAuthStore());
         <div class="flex flex-col md:flex-row justify-center">
           <div class="md:w-1/2 bg-white rounded-lg shadow-md p-4 md:p-10 md:m-10">
             <h2 class="text-2xl font-semibold mb-4">Register</h2>
-            <form @submit.prevent="authenticate('register', formData)">
+            <form @submit.prevent="register">
               <div class="mb-3">
                 <label for="register-name" class="block">Name</label>
                 <input type="name" id="register-name" v-model="formData.name"

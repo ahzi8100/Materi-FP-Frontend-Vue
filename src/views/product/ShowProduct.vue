@@ -31,7 +31,7 @@ onMounted(async () => {
           <div class="w-full lg:w-1/2">
             <!-- Big Image -->
             <div id="main-image-container">
-              <img id="main-image" class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
+              <img id="main-image" class="h-auto w-full max-w-full rounded-lg object-fit object-center"
                 :src="product.image" alt="Main Product Image" />
             </div>
           </div>
@@ -39,13 +39,8 @@ onMounted(async () => {
           <div class="w-full lg:w-1/2 flex flex-col justify-between">
             <div class="pb-8 border-b border-gray-line">
               <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
-              <div class="flex items-center mb-8">
-                <span>★★★★★</span>
-                <span class="ml-2">(0 Reviews)</span>
-                <a href="#" class="ml-4 text-primary font-semibold">Write a review</a>
-              </div>
               <div class="mb-4 pb-4 border-b border-gray-line">
-                <p class="mb-2">Availability:<strong> {{ product.stock }} In Stock</strong></p>
+                <p class="mb-2">Availability: <strong> {{ product.stock }} In Stock</strong></p>
               </div>
               <div class="text-2xl font-semibold mb-8">Rp. {{ moneyFormat(calculateDiscount(product)) }}</div>
               <div class="flex items-center mb-8">

@@ -18,9 +18,7 @@ onMounted(async () => {
 
 //function payment "Midtrans"
 function payment(snap_token) {
-
   window.snap.pay(snap_token, {
-
     onSuccess: function () {
       router.push({ name: 'detail_order', params: { snap_token: snap_token } })
     },
@@ -31,7 +29,6 @@ function payment(snap_token) {
       router.push({ name: 'detail_order', params: { snap_token: snap_token } })
     }
   })
-
 }
 </script>
 

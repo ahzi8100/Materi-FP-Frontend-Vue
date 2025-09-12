@@ -2,16 +2,25 @@
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
 const formData = reactive({
   email: '',
   password: '',
 })
 
+const router = useRouter();
+
 const { errors } = storeToRefs(useAuthStore());
 const { authenticate } = useAuthStore();
 const login = async () => {
-  await authenticate('login', formData)
+  const success = await authenticate('login', formData)
+
+  if (success) {
+    router.push({ name: 'dashboard' }).then(() => {
+      window.location.reload();
+    });
+  }
 }
 </script>
 
