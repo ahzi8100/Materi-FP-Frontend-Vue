@@ -64,7 +64,9 @@ export const useCartStore = defineStore('cartStore', {
         const res = await Api.post(`/cart/remove/${cart}`);
 
         console.log(res.data);
-        return this.router.push({ name: 'cart' });
+        return this.router.push({ name: 'cart' }).then(() => {
+          window.location.reload();
+        });
       } catch (error) {
         this.errors = error.response.data.errors;
       }

@@ -5,15 +5,24 @@ import { useCartStore } from '@/stores/cart';
 import { useProductStore } from '@/stores/product';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 
 const route = useRoute();
+const router = useRouter();
 const { getDetailProduct } = useProductStore();
 const { user } = storeToRefs(useAuthStore());
 const product = ref({})
 const quantity = ref(1)
 const { addToCart } = useCartStore();
+
+function handleAddToCart(product, user, quantity, price) {
+  if (!user) {
+    return router.push({ name: "login" });
+  }
+
+  return addToCart(product, user, quantity, price);
+}
 
 onMounted(async () => {
   const slug = route.params.slug
@@ -50,7 +59,7 @@ onMounted(async () => {
               <div class="mb-4 pb-4 border-b border-gray-line">
                 <p class="mb-2">Discount: <strong> {{ product.discount }}%</strong></p>
               </div>
-              <button @click.prevent="addToCart(product.id, user.id, quantity, calculateDiscount(product))"
+              <button @click.prevent="handleAddToCart(product.id, user.id, quantity, calculateDiscount(product))"
                 class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">Add
                 to Cart</button>
             </div>

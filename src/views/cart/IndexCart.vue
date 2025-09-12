@@ -88,29 +88,6 @@ const handleCheckout = async () => {
   if (snapToken) {
     // Panggil Midtrans Snap.js untuk menampilkan halaman pembayaran
     window.snap.pay(snapToken, {
-      // onSuccess: function (result) {
-      //   // Logika setelah pembayaran sukses
-      //   alert("Pembayaran berhasil!");
-      //   // Redirect ke halaman dashboard atau invoice
-      // },
-      // onPending: function (result) {
-      //   // Logika setelah pembayaran pending
-      //   alert("Pembayaran Anda sedang menunggu.");
-      // },
-      // onError: function (result) {
-      //   // Logika jika pembayaran gagal
-      //   alert("Pembayaran gagal!");
-      // },
-      // onSuccess: function () {
-      //   router.push({ name: 'detail_order', params: { snap_token: snapToken } })
-      // },
-      // onPending: function () {
-      //   router.push({ name: 'detail_order', params: { snap_token: snapToken } })
-      // },
-      // onError: function () {
-      //   router.push({ name: 'detail_order', params: { snap_token: snapToken } })
-      // }
-
       onSuccess: function (result) {
         console.log("Success:", result);
         router.push({ name: "detail_order", params: { snap_token: snapToken } });
@@ -129,7 +106,6 @@ const handleCheckout = async () => {
     });
   }
 };
-
 </script>
 
 <template>
@@ -154,11 +130,11 @@ const handleCheckout = async () => {
               <p class="font-semibold text-gray-800">{{ cart.product.title }}</p>
               <p class="text-xs text-gray-500 my-1">QTY : {{ cart.quantity }}</p>
               <span class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
-                }}</span>
+              }}</span>
             </div>
           </div>
           <div class="flex flex-col items-end">
-            <p class="font-semibold text-primary">Rp. {{ moneyFormat(cart.price) }}</p>
+            <p class="font-semibold text-primary">{{ moneyFormat(cart.price) }}</p>
             <button @click.prevent="removeCartItem(cart.id)" class="text-red-500 hover:text-red-700 mt-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
@@ -251,7 +227,7 @@ const handleCheckout = async () => {
                 <input type="radio" name="courier" :id="`courier-${courier.value}`" :value="courier.value"
                   v-model="selectedCourier" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                 <label :for="`courier-${courier.value}`" class="ml-2 block text-sm text-gray-900">{{ courier.name
-                  }}</label>
+                }}</label>
               </div>
             </div>
           </div>
