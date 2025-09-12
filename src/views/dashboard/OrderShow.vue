@@ -113,14 +113,14 @@ function payment(snap_token) {
                       class="bg-black-500 hover:bg-blue-600 font-semibold py-2 px-4 rounded-full">BAYAR
                       SEKARANG</button>
                     <button v-else-if="detailOrder.status == 'Success'"
-                      class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full">{{
-                        detailOrder.status }}</button>
+                      class="text-green-500 font-semibold py-2 px-4 rounded-full">{{
+                      detailOrder.status }}</button>
                     <button v-else-if="detailOrder.status == 'Expired'"
-                      class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-full">{{
-                        detailOrder.status }}</button>
+                      class="text-yellow-500 font-semibold py-2 px-4 rounded-full">{{
+                      detailOrder.status }}</button>
                     <button v-else-if="detailOrder.status == 'Failed'"
-                      class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full">{{
-                        detailOrder.status }}</button>
+                      class="text-red-500 font-semibold py-2 px-4 rounded-full">{{
+                      detailOrder.status }}</button>
                   </td>
                 </tr>
               </tbody>
