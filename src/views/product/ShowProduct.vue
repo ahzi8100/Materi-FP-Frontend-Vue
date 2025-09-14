@@ -8,13 +8,19 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 
+const { getDetailProduct } = useProductStore();
+const product = ref({})
 const route = useRoute();
 const router = useRouter();
-const { getDetailProduct } = useProductStore();
+
 const { user } = storeToRefs(useAuthStore());
-const product = ref({})
 const quantity = ref(1)
 const { addToCart } = useCartStore();
+
+onMounted(async () => {
+  const slug = route.params.slug
+  product.value = await getDetailProduct(slug)
+})
 
 function handleAddToCart(product, quantity) {
   if (!user.value) {
@@ -23,11 +29,6 @@ function handleAddToCart(product, quantity) {
 
   return addToCart(product, quantity);
 }
-
-onMounted(async () => {
-  const slug = route.params.slug
-  product.value = await getDetailProduct(slug)
-})
 </script>
 
 <template>

@@ -74,8 +74,6 @@ const checkoutPayload = computed(() => {
     courier: selectedCourier.value,
     service: selectedCourierService.value?.service,
     cost_courier: courierCost,
-    weight: cartWeight.value,
-    grand_total: courierCost + cartTotal.value,
   };
 });
 

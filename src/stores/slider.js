@@ -4,7 +4,6 @@ import { defineStore } from "pinia";
 export const useSliderStore = defineStore('sliderStore', {
   state: () => {
     return {
-      // sliders: null,
       errors: {},
     }
   },
