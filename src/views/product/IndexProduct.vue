@@ -25,7 +25,8 @@ onMounted(async () => {
             <p class="my-2">{{ product.category.name }}</p>
             <div class="flex items-center mb-4">
               <span class="text-lg font-bold text-primary">{{ moneyFormat(calculateDiscount(product)) }}</span>
-              <span class="text-sm line-through ml-2">{{ moneyFormat(product.price) }}</span>
+              <span v-if="product.discount != null || product.discount > 0" class="text-sm line-through ml-2">{{
+                moneyFormat(product.price) }}</span>
             </div>
             <router-link :to="{ name: 'detail_product', params: { slug: product.slug } }" class=" bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white
               hover:text-primary font-semibold py-2 px-4 rounded-full w-full">View Detail

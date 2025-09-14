@@ -102,6 +102,7 @@ const handleCheckout = async () => {
       },
       onClose: function () {
         alert("Anda menutup popup tanpa menyelesaikan pembayaran");
+        router.push({ name: "detail_order", params: { snap_token: snapToken } });
       }
     });
   }
@@ -129,8 +130,9 @@ const handleCheckout = async () => {
             <div>
               <p class="font-semibold text-gray-800">{{ cart.product.title }}</p>
               <p class="text-xs text-gray-500 my-1">QTY : {{ cart.quantity }}</p>
-              <span class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
-              }}</span>
+              <span v-if="cart.product.discount != null || cart.product.discount > 0"
+                class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
+                }}</span>
             </div>
           </div>
           <div class="flex flex-col items-end">
@@ -153,11 +155,11 @@ const handleCheckout = async () => {
           </div>
           <div class="flex justify-between">
             <span>ONGKOS KIRIM <span class="text-sm">({{ cartWeight }} gram)</span></span>
-            <span>: Rp. {{ moneyFormat(selectedCourierService?.cost) || 0 }}</span>
+            <span>: {{ moneyFormat(selectedCourierService?.cost) || 0 }}</span>
           </div>
           <div class="flex justify-between font-bold text-lg border-t pt-4">
             <span>GRAND TOTAL</span>
-            <span class="text-primary">Rp. {{ moneyFormat((selectedCourierService?.cost || 0) + cartTotal) }}</span>
+            <span class="text-primary">{{ moneyFormat((selectedCourierService?.cost || 0) + cartTotal) }}</span>
           </div>
         </div>
       </div>
@@ -227,7 +229,7 @@ const handleCheckout = async () => {
                 <input type="radio" name="courier" :id="`courier-${courier.value}`" :value="courier.value"
                   v-model="selectedCourier" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                 <label :for="`courier-${courier.value}`" class="ml-2 block text-sm text-gray-900">{{ courier.name
-                }}</label>
+                  }}</label>
               </div>
             </div>
           </div>
@@ -240,7 +242,7 @@ const handleCheckout = async () => {
                   v-model="selectedCourierService"
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                 <label :for="`cost-${cost.value}`" class="ml-2 block text-sm text-gray-900">{{ cost.service }} -
-                  Rp. {{ moneyFormat(cost.cost) }}</label>
+                  {{ moneyFormat(cost.cost) }}</label>
               </div>
             </div>
           </div>
@@ -258,7 +260,7 @@ const handleCheckout = async () => {
 
           <button @click="handleCheckout"
             class="mt-4 bg-primary text-white font-semibold py-3 px-6 rounded-full w-full hover:bg-transparent hover:text-primary transition-colors duration-200 border border-primary">
-            PROSES CHECKOUT
+            CHECKOUT
           </button>
         </div>
       </div>

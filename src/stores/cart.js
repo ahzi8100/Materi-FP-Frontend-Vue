@@ -9,13 +9,13 @@ export const useCartStore = defineStore('cartStore', {
     }
   },
   actions: {
-    async addToCart(product_id, customer_id, quantity, price) {
+    async addToCart(product_id, customer_id, quantity) {
       try {
         const res = await Api.post('/cart', {
           product_id: product_id,
           customer_id: customer_id,
           quantity: quantity,
-          price: price,
+          // price: price,
         });
 
         const data = res.data;

@@ -16,12 +16,12 @@ const product = ref({})
 const quantity = ref(1)
 const { addToCart } = useCartStore();
 
-function handleAddToCart(product, user, quantity, price) {
+function handleAddToCart(product, user, quantity) {
   if (!user) {
     return router.push({ name: "login" });
   }
 
-  return addToCart(product, user, quantity, price);
+  return addToCart(product, user, quantity);
 }
 
 onMounted(async () => {
@@ -45,21 +45,22 @@ onMounted(async () => {
             </div>
           </div>
           <!-- Product Details Section -->
-          <div class="w-full lg:w-1/2 flex flex-col justify-between">
+          <div class="w-full lg:w-1/2 flex flex-col ">
             <div class="pb-8 border-b border-gray-line">
               <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
               <div class="mb-4 pb-4 border-b border-gray-line">
                 <p class="mb-2">Availability: <strong> {{ product.stock }} In Stock</strong></p>
               </div>
-              <div class="text-2xl font-semibold mb-8">Rp. {{ moneyFormat(calculateDiscount(product)) }}</div>
+              <div class="text-2xl font-semibold mb-8">{{ moneyFormat(calculateDiscount(product)) }}</div>
               <div class="flex items-center mb-8">
                 <span>Quantity</span>
                 <input type="number" class="ml-2 border rounded-2xl py-1 px-3" v-model="quantity" />
               </div>
               <div class="mb-4 pb-4 border-b border-gray-line">
-                <p class="mb-2">Discount: <strong> {{ product.discount }}%</strong></p>
+                <p v-if="product.discount != null || product.discount > 0" class="mb-2">Discount: <strong> {{
+                    product.discount }}%</strong></p>
               </div>
-              <button @click.prevent="handleAddToCart(product.id, user.id, quantity, calculateDiscount(product))"
+              <button @click.prevent="handleAddToCart(product.id, user.id, quantity)"
                 class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">Add
                 to Cart</button>
             </div>
