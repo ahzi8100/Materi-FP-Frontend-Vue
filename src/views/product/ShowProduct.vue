@@ -16,12 +16,12 @@ const product = ref({})
 const quantity = ref(1)
 const { addToCart } = useCartStore();
 
-function handleAddToCart(product, user, quantity) {
-  if (!user) {
+function handleAddToCart(product, quantity) {
+  if (!user.value) {
     return router.push({ name: "login" });
   }
 
-  return addToCart(product, user, quantity);
+  return addToCart(product, quantity);
 }
 
 onMounted(async () => {
@@ -58,9 +58,9 @@ onMounted(async () => {
               </div>
               <div class="mb-4 pb-4 border-b border-gray-line">
                 <p v-if="product.discount != null || product.discount > 0" class="mb-2">Discount: <strong> {{
-                    product.discount }}%</strong></p>
+                  product.discount }}%</strong></p>
               </div>
-              <button @click.prevent="handleAddToCart(product.id, user.id, quantity)"
+              <button @click.prevent="handleAddToCart(product.id, quantity)"
                 class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">Add
                 to Cart</button>
             </div>
