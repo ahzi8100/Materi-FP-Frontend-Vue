@@ -4,7 +4,6 @@ import { defineStore } from "pinia";
 export const useCartStore = defineStore('cartStore', {
   state: () => {
     return {
-      // carts: null,
       errors: {},
     }
   },
@@ -17,10 +16,10 @@ export const useCartStore = defineStore('cartStore', {
         });
 
         const data = res.data;
-        console.log(data.carts);
-        return this.router.push({ name: 'cart' });
+        return data.success
       } catch (error) {
         this.errors = error.response.data.errors;
+        return false
       }
     },
 
@@ -60,13 +59,12 @@ export const useCartStore = defineStore('cartStore', {
     async removeCartItem(cart) {
       try {
         const res = await Api.post(`/cart/remove/${cart}`);
+        const data = res.data;
 
-        console.log(res.data);
-        return this.router.push({ name: 'cart' }).then(() => {
-          window.location.reload();
-        });
+        return data.success;
       } catch (error) {
         this.errors = error.response.data.errors;
+        return false;
       }
     },
 

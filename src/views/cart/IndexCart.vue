@@ -5,21 +5,60 @@ import { useCourierStore } from '@/stores/courier';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
 const { getCart, getTotalCart, getTotalWeight, removeCartItem, checkout } = useCartStore();
 const carts = ref([])
 const cartTotal = ref(0)
 const cartWeight = ref(0)
 
+const removeItemCart = async (cartId) => {
+  const item = carts.value.findIndex(cart => cart.id == cartId);
+  carts.value.splice(item, 1)
+
+  const res = await removeCartItem(cartId);
+  if (res) {
+    Swal.fire({
+      toast: true,
+      position: "top-end", // posisi: top, top-start, top-end, bottom, bottom-start, bottom-end
+      icon: "success",
+      title: "Success remove item in cart",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      customClass: {
+        popup: 'mt-24' // kalau pakai Tailwind → kasih margin top 24
+      }
+    });
+
+    cartTotal.value = await getTotalCart();
+    cartWeight.value = await getTotalWeight();
+  }
+}
+
 const { getProvinces, getCities, getDistricts, checkOngkir } = useCourierStore();
 const { provinces, cities, districts, couriers, ongkirOptions } = storeToRefs(useCourierStore());
+
+// Deklarasikan semua data formulir
+const formData = ref({
+  name: '',
+  phone: '',
+  address: '',
+});
 
 const selectedProvinceId = ref('');
 const selectedCityId = ref('');
 const selectedDistrictId = ref('');
 const selectedCourier = ref('');
 const selectedCourierService = ref();
-const router = useRouter();
+
+onMounted(async () => {
+  carts.value = await getCart();
+  cartTotal.value = await getTotalCart();
+  cartWeight.value = await getTotalWeight();
+
+  provinces.value = await getProvinces();
+})
 
 // Gunakan watcher untuk memantau perubahan province
 watch(selectedProvinceId, (newProvinceId) => {
@@ -49,22 +88,6 @@ watch([selectedCourier, selectedDistrictId], async ([newCourier, newDistrict]) =
   }
 });
 
-
-onMounted(async () => {
-  carts.value = await getCart();
-  cartTotal.value = await getTotalCart();
-  cartWeight.value = await getTotalWeight();
-
-  provinces.value = await getProvinces();
-})
-
-// Deklarasikan semua data formulir
-const formData = ref({
-  name: '',
-  phone: '',
-  address: '',
-});
-
 // Properti terhitung untuk grand_total dan data checkout lainnya
 const checkoutPayload = computed(() => {
   const courierCost = selectedCourierService.value?.cost || 0;
@@ -76,6 +99,8 @@ const checkoutPayload = computed(() => {
     cost_courier: courierCost,
   };
 });
+
+const router = useRouter();
 
 // Fungsi untuk proses checkout
 const handleCheckout = async () => {
@@ -99,7 +124,13 @@ const handleCheckout = async () => {
         router.push({ name: "detail_order", params: { snap_token: snapToken } });
       },
       onClose: function () {
-        alert("Anda menutup popup tanpa menyelesaikan pembayaran");
+        Swal.fire({
+          title: "Anda Belum Menyelesaikan Pembayaran",
+          text: "Silahkan lihat detail invoice di halaman order akun anda!",
+          icon: "warning",
+          timer: 5000,
+          timerProgressBar: true,
+        });
         router.push({ name: "detail_order", params: { snap_token: snapToken } });
       }
     });
@@ -121,45 +152,51 @@ const handleCheckout = async () => {
           DETAIL PESANAN
         </h2>
 
-        <div v-for="cart in carts" :key="cart.id"
-          class="flex items-center justify-between p-2 border-1 bg-blue-50 border-gray-50 mb-4">
-          <div class="flex items-start">
-            <img :src="cart.product.image" alt="Product" class="h-20 w-20 object-cover rounded mr-4">
-            <div>
-              <p class="font-semibold text-gray-800">{{ cart.product.title }}</p>
-              <p class="text-xs text-gray-500 my-1">QTY : {{ cart.quantity }}</p>
-              <span v-if="cart.product.discount != null || cart.product.discount > 0"
-                class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
-                }}</span>
+        <div v-if="carts.length != 0">
+          <div v-for="cart in carts" :key="cart.id"
+            class="flex items-center justify-between p-2 border-1 bg-blue-50 border-gray-50 mb-4">
+            <div class="flex items-start">
+              <img :src="cart.product.image" alt="Product" class="h-20 w-20 object-cover rounded mr-4">
+              <div>
+                <p class="font-semibold text-gray-800">{{ cart.product.title }}</p>
+                <p class="text-xs text-gray-500 my-1">QTY : {{ cart.quantity }}</p>
+                <span v-if="cart.product.discount != null || cart.product.discount > 0"
+                  class="text-sm line-through text-red-500">{{ moneyFormat(cart.product.price * cart.quantity)
+                  }}</span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end">
+              <p class="font-semibold text-primary">{{ moneyFormat(cart.price) }}</p>
+              <button @click.prevent="removeItemCart(cart.id)" class="text-red-500 hover:text-red-700 mt-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                  </path>
+                </svg>
+              </button>
             </div>
           </div>
-          <div class="flex flex-col items-end">
-            <p class="font-semibold text-primary">{{ moneyFormat(cart.price) }}</p>
-            <button @click.prevent="removeCartItem(cart.id)" class="text-red-500 hover:text-red-700 mt-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                </path>
-              </svg>
-            </button>
+
+          <div class="text-gray-600 space-y-2 border-t">
+            <div class="flex justify-between font-semibold">
+              <span>JUMLAH</span>
+              <span>: {{ moneyFormat(cartTotal) }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>ONGKOS KIRIM <span class="text-sm">({{ cartWeight }} gram)</span></span>
+              <span>: {{ moneyFormat(selectedCourierService?.cost) || 0 }}</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg border-t pt-4">
+              <span>GRAND TOTAL</span>
+              <span class="text-primary">{{ moneyFormat((selectedCourierService?.cost || 0) + cartTotal) }}</span>
+            </div>
           </div>
+        </div>
+        <div v-else>
+          <p class="text-lg text-gray-500">Belum ada produk yang dimasukan ke keranjang</p>
         </div>
 
-        <div class="text-gray-600 space-y-2 border-t">
-          <div class="flex justify-between font-semibold">
-            <span>JUMLAH</span>
-            <span>: {{ moneyFormat(cartTotal) }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span>ONGKOS KIRIM <span class="text-sm">({{ cartWeight }} gram)</span></span>
-            <span>: {{ moneyFormat(selectedCourierService?.cost) || 0 }}</span>
-          </div>
-          <div class="flex justify-between font-bold text-lg border-t pt-4">
-            <span>GRAND TOTAL</span>
-            <span class="text-primary">{{ moneyFormat((selectedCourierService?.cost || 0) + cartTotal) }}</span>
-          </div>
-        </div>
       </div>
 
       <div class="md:w-1/2 bg-white rounded-lg shadow-lg p-6 h-fit">
@@ -232,7 +269,7 @@ const handleCheckout = async () => {
             </div>
           </div>
 
-          <div v-if="ongkirOptions.length > 0" class="mt-4">
+          <div v-if="ongkirOptions.length >= 1" class="mt-4">
             <h3 class="font-semibold text-gray-800">Pilihan Layanan: </h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div v-for="cost in ongkirOptions" :key="cost.code" class="flex items-center">
@@ -245,7 +282,7 @@ const handleCheckout = async () => {
             </div>
           </div>
 
-          <div v-if="ongkirOptions.length === 0 && selectedCourier" class="mt-4 text-red-500">
+          <div v-if="ongkirOptions.length <= 0 && selectedCourierService == ''" class="mt-4 text-red-500">
             Tidak ada opsi pengiriman tersedia.
           </div>
 

@@ -6,6 +6,7 @@ import { useProductStore } from '@/stores/product';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
 
 const { getDetailProduct } = useProductStore();
@@ -22,12 +23,26 @@ onMounted(async () => {
   product.value = await getDetailProduct(slug)
 })
 
-function handleAddToCart(product, quantity) {
+const handleAddToCart = async (product, quantity) => {
   if (!user.value) {
     return router.push({ name: "login" });
   }
 
-  return addToCart(product, quantity);
+  const res = await addToCart(product, quantity);
+  if (res) {
+    Swal.fire({
+      toast: true,
+      position: "top-end", // posisi: top, top-start, top-end, bottom, bottom-start, bottom-end
+      icon: "success",
+      title: "Success add item to cart",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      customClass: {
+        popup: 'mt-24' // kalau pakai Tailwind → kasih margin top 24
+      }
+    });
+  }
 }
 </script>
 
