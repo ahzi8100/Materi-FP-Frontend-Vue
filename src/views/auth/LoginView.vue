@@ -17,7 +17,9 @@ const login = async () => {
   const success = await authenticate('login', formData)
 
   if (success) {
-    router.push({ name: 'dashboard' });
+    window.location.reload().then(() => {
+      router.push({ name: 'dashboard' });
+    });
   }
 }
 </script>
